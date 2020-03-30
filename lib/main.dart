@@ -1,4 +1,3 @@
-import 'package:covid19_dashboard/service/corona_service.dart';
 import 'package:flutter/material.dart';
 
 import 'page/home.dart';

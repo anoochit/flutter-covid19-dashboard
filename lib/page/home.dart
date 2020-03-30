@@ -33,82 +33,88 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
           minimum: EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              // Row 1 cases
-              Card(
-                  color: Colors.blue,
-                  child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text("Cases"),
-                          Text("1234"),
-                          Text("(Today cases 1234)")
-                        ],
-                      ))),
-              // Row 2
-              Row(children: <Widget>[
-                Card(
-                    color: Colors.green,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Recoveries"),
-                            Text("1234"),
-                          ],
-                        ))),
-                Card(
-                    color: Colors.amber[600],
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Critical"),
-                            Text("1234"),
-                          ],
-                        ))),
-              ]),
-              // Row 3
-              Row(children: <Widget>[
-                Card(
-                    color: Colors.cyan,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Active"),
-                            Text("1234"),
-                          ],
-                        ))),
-                Card(
-                    color: Colors.red,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Deaths"),
-                            Text("1234"),
-                          ],
-                        ))),
-              ])
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                // Row 1 cases
+                Row(
+                  children: <Widget>[
+                    Card(
+                        color: Colors.blue,
+                        child: Container(
+                            width: (MediaQuery.of(context).size.width - 24),
+                            height: 100,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Cases"),
+                                Text("1234"),
+                                Text("(Today cases 1234)")
+                              ],
+                            ))),
+                  ],
+                ),
+                // Row 2
+                Row(children: <Widget>[
+                  Card(
+                      color: Colors.green,
+                      child: Container(
+                          width: (MediaQuery.of(context).size.width * 0.5) - 16,
+                          height: 100,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Recoveries"),
+                              Text("1234"),
+                            ],
+                          ))),
+                  Card(
+                      color: Colors.amber[600],
+                      child: Container(
+                          width: (MediaQuery.of(context).size.width * 0.5) - 16,
+                          height: 100,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Critical"),
+                              Text("1234"),
+                            ],
+                          ))),
+                ]),
+                // Row 3
+                Row(children: <Widget>[
+                  Card(
+                      color: Colors.cyan,
+                      child: Container(
+                          width: (MediaQuery.of(context).size.width * 0.5) - 16,
+                          height: 100,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Active"),
+                              Text("1234"),
+                            ],
+                          ))),
+                  Card(
+                      color: Colors.red,
+                      child: Container(
+                          width: (MediaQuery.of(context).size.width * 0.5) - 16,
+                          height: 100,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Deaths"),
+                              Text("11"),
+                            ],
+                          ))),
+                ])
+              ],
+            ),
           )),
     );
   }
