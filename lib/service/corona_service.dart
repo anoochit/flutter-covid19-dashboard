@@ -1,13 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:covid19_dashboard/model/corona_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-
-// https://github.com/OssamaRafique/Corona-Statistics-And-Tracker-Dashboard-Angular-9
-// http://api.coronastatistics.live/countries/[country-name]
 
 Future<CountryStats> fetchCountryStats(String country) async {
   final endpoint = "http://api.coronastatistics.live/countries/" + country;
@@ -50,4 +46,14 @@ List<CountryStats> parseCountryStats(String response) {
   return parsed
       .map<CountryStats>((json) => CountryStats.fromJson(json))
       .toList();
+}
+
+String getFlagImage(String countryName) {
+  String asset = "assets/flags/";
+  if (countryCode[countryName] == null) {
+    asset = asset + "unknow.png";
+  } else {
+    asset = asset + countryCode[countryName].toLowerCase() + ".png";
+  }
+  return asset;
 }

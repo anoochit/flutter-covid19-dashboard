@@ -15,26 +15,48 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<OverallStats> overallStats;
+  Future<List<CountryStats>> overallCountryStats;
+  int overallCountryStatsSize = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    // overall stats
+    /*  // overall stats
     overallStats = fetchOverallStats();
     overallStats.then((stats) {
       log(stats.cases.toString());
     });
 
     // country stats
-    Future<List<CountryStats>> overallCountryStats;
     overallCountryStats = fetchOverallCountryStats();
     overallCountryStats.then((stats) {
       stats.forEach((item) {
         log(item.country);
+        log(getFlagImage(item.country));
       });
-    });
+    }); */
+  }
+
+  // list tile for affected country list
+  buildList(CountryStats countryStats) {
+    return ListTile(
+        leading: new Image.asset(
+          getFlagImage(countryStats.country),
+          width: 48,
+          height: 48,
+        ),
+        title: Text(countryStats.country),
+        subtitle: Row(
+          children: <Widget>[
+            Text("1234" + " Cases"),
+            Text(" & "),
+            Text("1234" + " Deaths")
+          ],
+        ),
+        onTap: () {
+          Navigator.push(context, ScaleRoute(page: CountryPage()));
+        });
   }
 
   @override
@@ -109,37 +131,38 @@ class _HomePageState extends State<HomePage> {
                         ))),
               ],
             ),
+
             // title countries statistics
             Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text("Countries Statistics")),
+                child: Text("Affected Countries")),
+
             // list view for country statistics
             Expanded(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                      leading: Image.asset(
-                        'icons/flags/png/th.png',
-                        package: 'country_icons',
-                        width: 50,
-                      ),
-                      title: Text("xxx"),
-                      subtitle: Row(
-                        children: <Widget>[
-                          Text("1234" + " Cases"),
-                          Text(" & "),
-                          Text("1234" + " Deaths")
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context, ScaleRoute(page: CountryPage()));
-                      });
-                },
-              ),
-            ),
+                child: ListView.builder(
+              itemCount: 1,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                    leading: new Image.asset(
+                      getFlagImage("Thailand"),
+                      width: 48,
+                      height: 48,
+                    ),
+                    title: Text("Thailand"),
+                    subtitle: Row(
+                      children: <Widget>[
+                        Text("1234" + " Cases"),
+                        Text(" & "),
+                        Text("1234" + " Deaths")
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          ScaleRoute(page: CountryPage(title: "Thailand")));
+                    });
+              },
+            )),
           ],
         ),
       ),

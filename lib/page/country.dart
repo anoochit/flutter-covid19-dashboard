@@ -4,19 +4,23 @@ import 'package:covid19_dashboard/service/corona_service.dart';
 import 'package:flutter/material.dart';
 
 class CountryPage extends StatefulWidget {
-  CountryPage({Key key}) : super(key: key);
+  final String title;
+  CountryPage({Key key, this.title}) : super(key: key);
 
   @override
-  _CountryPageState createState() => _CountryPageState();
+  _CountryPageState createState() => _CountryPageState(this.title);
 }
 
 class _CountryPageState extends State<CountryPage> {
+  final String title;
   Future<CountryStats> countryStats;
+
+  _CountryPageState(this.title);
 
   @override
   void initState() {
     super.initState();
-    countryStats = fetchCountryStats("thailand");
+    countryStats = fetchCountryStats(title);
     countryStats.then((stats) {
       log(stats.cases.toString());
     });
@@ -25,7 +29,7 @@ class _CountryPageState extends State<CountryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Thailand's statistics")),
+      appBar: AppBar(title: Text(this.title + "'s statistics")),
       body: SafeArea(
           minimum: EdgeInsets.all(8),
           child: SingleChildScrollView(
@@ -38,9 +42,8 @@ class _CountryPageState extends State<CountryPage> {
                     Container(
                       padding: EdgeInsets.all(4),
                       child: Image.asset(
-                        'icons/flags/png/th.png',
-                        package: 'country_icons',
-                        width: 50,
+                        'assets/flags/th.png',
+                        height: 48,
                       ),
                     ),
                     Container(
@@ -49,7 +52,7 @@ class _CountryPageState extends State<CountryPage> {
                   ],
                 ),
 
-                // Row 1 cases
+                // Row cases
                 Row(
                   children: <Widget>[
                     Card(
@@ -68,7 +71,8 @@ class _CountryPageState extends State<CountryPage> {
                             ))),
                   ],
                 ),
-                // Row 2
+
+                // Row recoveries
                 Row(children: <Widget>[
                   Card(
                       color: Colors.green,
@@ -97,7 +101,8 @@ class _CountryPageState extends State<CountryPage> {
                             ],
                           ))),
                 ]),
-                // Row 3
+
+                // Row active
                 Row(children: <Widget>[
                   Card(
                       color: Colors.cyan,
