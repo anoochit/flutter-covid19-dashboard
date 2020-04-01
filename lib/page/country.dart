@@ -5,17 +5,20 @@ import 'package:flutter/material.dart';
 
 class CountryPage extends StatefulWidget {
   final String title;
-  CountryPage({Key key, this.title}) : super(key: key);
+  final CountryStats data;
+  CountryPage({Key key, this.title, this.data}) : super(key: key);
 
   @override
-  _CountryPageState createState() => _CountryPageState(this.title);
+  _CountryPageState createState() => _CountryPageState(this.title, this.data);
 }
 
 class _CountryPageState extends State<CountryPage> {
   final String title;
+  final CountryStats data;
+
   Future<CountryStats> countryStats;
 
-  _CountryPageState(this.title);
+  _CountryPageState(this.title, this.data);
 
   @override
   void initState() {
@@ -42,13 +45,13 @@ class _CountryPageState extends State<CountryPage> {
                     Container(
                       padding: EdgeInsets.all(4),
                       child: Image.asset(
-                        'assets/flags/th.png',
+                        getFlagImage(this.title),
                         height: 48,
                       ),
                     ),
                     Container(
                         padding: EdgeInsets.all(4),
-                        child: Text("Thailand's statistics"))
+                        child: Text(this.title + "'s statistics"))
                   ],
                 ),
 
@@ -65,8 +68,10 @@ class _CountryPageState extends State<CountryPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text("Infections"),
-                                Text("1234"),
-                                Text("(Today cases 1234)")
+                                Text(data.cases.toString()),
+                                Text("(Today cases " +
+                                    data.todayCases.toString() +
+                                    " )")
                               ],
                             ))),
                   ],
@@ -84,7 +89,7 @@ class _CountryPageState extends State<CountryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text("Recoveries"),
-                              Text("1234"),
+                              Text(data.recovered.toString()),
                             ],
                           ))),
                   Card(
@@ -97,7 +102,7 @@ class _CountryPageState extends State<CountryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text("Critical"),
-                              Text("1234"),
+                              Text(data.critical.toString()),
                             ],
                           ))),
                 ]),
@@ -114,7 +119,7 @@ class _CountryPageState extends State<CountryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text("Active"),
-                              Text("1234"),
+                              Text(data.active.toString()),
                             ],
                           ))),
                   Card(
@@ -127,7 +132,10 @@ class _CountryPageState extends State<CountryPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text("Deaths"),
-                              Text("11"),
+                              Text(data.deaths.toString()),
+                              Text("(Today deaths " +
+                                  data.todayDeaths.toString() +
+                                  " )")
                             ],
                           ))),
                 ])

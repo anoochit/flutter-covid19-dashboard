@@ -18,14 +18,23 @@ class _HomePageState extends State<HomePage> {
   Future<List<CountryStats>> overallCountryStats;
   int overallCountryStatsSize = 0;
 
+  int casesStats = 0;
+  int deathsStats = 0;
+  int recoveriesStats = 0;
+  int criticalStats = 0;
+
   @override
   void initState() {
     super.initState();
 
-    /*  // overall stats
+    // overall stats
     overallStats = fetchOverallStats();
     overallStats.then((stats) {
-      log(stats.cases.toString());
+      setState(() {
+        casesStats = stats.cases;
+        deathsStats = stats.deaths;
+        recoveriesStats = stats.recovered;
+      });
     });
 
     // country stats
@@ -35,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         log(item.country);
         log(getFlagImage(item.country));
       });
-    }); */
+    });
   }
 
   // list tile for affected country list
@@ -49,13 +58,17 @@ class _HomePageState extends State<HomePage> {
         title: Text(countryStats.country),
         subtitle: Row(
           children: <Widget>[
-            Text("1234" + " Cases"),
+            Text(countryStats.cases.toString() + " Cases"),
             Text(" & "),
-            Text("1234" + " Deaths")
+            Text(countryStats.deaths.toString() + " Deaths")
           ],
         ),
         onTap: () {
-          Navigator.push(context, ScaleRoute(page: CountryPage()));
+          Navigator.push(
+              context,
+              ScaleRoute(
+                  page: CountryPage(
+                      title: countryStats.country, data: countryStats)));
         });
   }
 
@@ -76,15 +89,14 @@ class _HomePageState extends State<HomePage> {
                 Card(
                     color: Colors.blue,
                     child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
+                        width: (MediaQuery.of(context).size.width) - 24,
                         height: 100,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text("Infections"),
-                            Text("1234"),
-                            Text("(Today cases 1234)")
+                            Text(casesStats.toString()),
                           ],
                         ))),
                 Card(
@@ -97,8 +109,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text("Deaths"),
-                            Text("1234"),
-                            Text("(Today cases 1234)")
+                            Text(deathsStats.toString()),
                           ],
                         ))),
                 Card(
@@ -111,22 +122,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text("Recoveries"),
-                            Text("1234"),
-                            Text("(Today cases 1234)")
-                          ],
-                        ))),
-                Card(
-                    color: Colors.amber[600],
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Critical"),
-                            Text("1234"),
-                            Text("(Today cases 1234)")
+                            Text(recoveriesStats.toString()),
                           ],
                         ))),
               ],
@@ -140,29 +136,35 @@ class _HomePageState extends State<HomePage> {
 
             // list view for country statistics
             Expanded(
-                child: ListView.builder(
-              itemCount: 1,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                    leading: new Image.asset(
-                      getFlagImage("Thailand"),
-                      width: 48,
-                      height: 48,
-                    ),
-                    title: Text("Thailand"),
-                    subtitle: Row(
+              child: FutureBuilder(
+                future: fetchOverallCountryStats(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    List<CountryStats> data = snapshot.data;
+                    // show data
+                    return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return buildList(snapshot.data[index]);
+                      },
+                    );
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("1234" + " Cases"),
-                        Text(" & "),
-                        Text("1234" + " Deaths")
+                        CircularProgressIndicator(),
+                        SizedBox(width: 16),
+                        Text("Loading...")
                       ],
-                    ),
-                    onTap: () {
-                      Navigator.push(context,
-                          ScaleRoute(page: CountryPage(title: "Thailand")));
-                    });
-              },
-            )),
+                    );
+                  }
+                  return Container();
+                },
+              ),
+            ),
           ],
         ),
       ),
