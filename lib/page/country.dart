@@ -15,15 +15,15 @@ class CountryPage extends StatefulWidget {
 class _CountryPageState extends State<CountryPage> {
   final String title;
   final CountryStats data;
+  _CountryPageState(this.title, this.data);
 
   Future<CountryStats> countryStats;
-
-  _CountryPageState(this.title, this.data);
+  CoronaService coronaService = new CoronaService();
 
   @override
   void initState() {
     super.initState();
-    countryStats = fetchCountryStats(title);
+    countryStats = coronaService.fetchCountryStats(title);
     countryStats.then((stats) {
       log(stats.cases.toString());
     });
@@ -45,7 +45,7 @@ class _CountryPageState extends State<CountryPage> {
                     Container(
                       padding: EdgeInsets.all(4),
                       child: Image.asset(
-                        getFlagImage(this.title),
+                        coronaService.getFlagImage(this.title),
                         height: 48,
                       ),
                     ),

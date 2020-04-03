@@ -23,12 +23,14 @@ class _HomePageState extends State<HomePage> {
   int recoveriesStats = 0;
   int criticalStats = 0;
 
+  CoronaService coronaService = new CoronaService();
+
   @override
   void initState() {
     super.initState();
 
     // overall stats
-    overallStats = fetchOverallStats();
+    overallStats = coronaService.fetchOverallStats();
     overallStats.then((stats) {
       setState(() {
         casesStats = stats.cases;
@@ -38,11 +40,11 @@ class _HomePageState extends State<HomePage> {
     });
 
     // country stats
-    overallCountryStats = fetchOverallCountryStats();
+    overallCountryStats = coronaService.fetchOverallCountryStats();
     overallCountryStats.then((stats) {
       stats.forEach((item) {
         log(item.country);
-        log(getFlagImage(item.country));
+        log(coronaService.getFlagImage(item.country));
       });
     });
   }
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
   buildList(CountryStats countryStats) {
     return ListTile(
         leading: new Image.asset(
-          getFlagImage(countryStats.country),
+          coronaService.getFlagImage(countryStats.country),
           width: 48,
           height: 48,
         ),
@@ -137,7 +139,7 @@ class _HomePageState extends State<HomePage> {
             // list view for country statistics
             Expanded(
               child: FutureBuilder(
-                future: fetchOverallCountryStats(),
+                future: coronaService.fetchOverallCountryStats(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     List<CountryStats> data = snapshot.data;
