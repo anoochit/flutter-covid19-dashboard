@@ -7,6 +7,7 @@ import 'package:covid19_dashboard/utils/utils.dart';
 import 'package:covid19_dashboard/widget/stats_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -31,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+/*
     // overall stats
     overallStats = coronaService.fetchOverallStats();
     overallStats.then((stats) {
@@ -49,12 +51,12 @@ class _HomePageState extends State<HomePage> {
         log(coronaService.getFlagImage(item.country));
       });
     });
+*/
   }
 
   // list tile for affected country list
   buildList(CountryStats countryStats) {
     var numFormat = new NumberFormat("###,###", Intl.defaultLocale);
-
     return ListTile(
         leading: new Image.asset(
           coronaService.getFlagImage(countryStats.country),
@@ -64,9 +66,15 @@ class _HomePageState extends State<HomePage> {
         title: Text(countryStats.country),
         subtitle: Row(
           children: <Widget>[
-            Text(numFormat.format(countryStats.cases) + " Cases"),
+            Text(
+              numFormat.format(countryStats.cases) + " Cases",
+              style: TextStyle(color: Colors.blue),
+            ),
             Text(" & "),
-            Text(numFormat.format(countryStats.deaths) + " Deaths")
+            Text(
+              numFormat.format(countryStats.deaths) + " Deaths",
+              style: TextStyle(color: Colors.red),
+            )
           ],
         ),
         onTap: () {
@@ -80,6 +88,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    OverallStats overallStats = Provider.of<OverallStats>(context);
+    List<CountryStats> countryStats = Provider.of<List<CountryStats>>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Covid 19 Dashboard"),
@@ -89,53 +100,49 @@ class _HomePageState extends State<HomePage> {
         minimum: EdgeInsets.all(8),
         child: Column(
           children: <Widget>[
-            // wrap overall statistic
-            Wrap(
-              children: <Widget>[
-                cardBig(context, Colors.blue, "Inflections", casesStats, null),
-                cardSmall(context, Colors.red, "Deaths", deathsStats, null),
-                cardSmall(
-                    context, Colors.green, "Recovered", recoveriesStats, null),
-              ],
+            // overall statistics
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              child: Text(
+                "Worldwide",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
             ),
+
+            // wrap overall statistic
+            (overallStats != null)
+                ? Wrap(
+                    children: <Widget>[
+                      cardBig(context, Colors.blue, "Inflections",
+                          overallStats.cases, null),
+                      cardSmall(context, Colors.red, "Deaths",
+                          overallStats.deaths, null),
+                      cardSmall(context, Colors.green, "Recovered",
+                          overallStats.recovered, null),
+                    ],
+                  )
+                : loadingWidget(),
 
             // title countries statistics
             Container(
                 alignment: Alignment.centerLeft,
-                padding: EdgeInsets.symmetric(vertical: 8.0),
-                child: Text("Affected Countries")),
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+                child: Text(
+                  "Affected Countries",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+                )),
 
             // list view for country statistics
-            Expanded(
-              child: FutureBuilder(
-                future: coronaService.fetchOverallCountryStats(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    List<CountryStats> data = snapshot.data;
-                    // show data
-                    return ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return buildList(snapshot.data[index]);
-                      },
-                    );
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        CircularProgressIndicator(),
-                        SizedBox(width: 16),
-                        Text("Loading...")
-                      ],
-                    );
-                  }
-                  return Container();
-                },
-              ),
-            ),
+            (countryStats != null)
+                ? Expanded(
+                    child: ListView.builder(
+                    itemCount: countryStats.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return buildList(countryStats[index]);
+                    },
+                  ))
+                : loadingWidget(),
           ],
         ),
       ),

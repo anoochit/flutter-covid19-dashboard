@@ -20,8 +20,13 @@ Widget cardBig(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(title),
-              Text(numFormat.format(value)),
+              Text(
+                title,
+              ),
+              Text(
+                numFormat.format(value),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
               (subtitle != null) ? Text(subtitle.toString()) : Container(),
             ],
           )));
@@ -45,8 +50,23 @@ Widget cardSmall(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(title),
-              Text(numFormat.format(value)),
+              Text(
+                numFormat.format(value),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+              ),
               (subtitle != null) ? Text(subtitle.toString()) : Container(),
             ],
           )));
+}
+
+Widget loadingWidget() {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      CircularProgressIndicator(),
+      SizedBox(width: 16),
+      Text("Loading...")
+    ],
+  );
 }

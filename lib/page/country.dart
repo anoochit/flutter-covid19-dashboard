@@ -74,7 +74,7 @@ class _CountryPageState extends State<CountryPage> {
                   cardSmall(
                       context, Colors.amber, "Critical", data.critical, null),
                   cardSmall(context, Colors.cyan, "Active", data.active, null),
-                  cardSmall(context, Colors.red, "Deaths", data.active,
+                  cardSmall(context, Colors.red, "Deaths", data.deaths,
                       "(Today " + numFormat.format(data.todayDeaths) + ")"),
                 ])
               ],
