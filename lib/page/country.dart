@@ -47,15 +47,20 @@ class _CountryPageState extends State<CountryPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.all(4),
+                      padding: EdgeInsets.all(8),
                       child: Image.asset(
                         coronaService.getFlagImage(this.title),
-                        height: 48,
+                        height: 40,
                       ),
                     ),
-                    Container(
-                        padding: EdgeInsets.all(4),
-                        child: Text(this.title + "'s statistics"))
+                    Flexible(
+                      child: Text(
+                        this.title,
+                        maxLines: 2,
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w800),
+                      ),
+                    )
                   ],
                 ),
 
