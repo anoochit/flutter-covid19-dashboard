@@ -4,7 +4,9 @@ import 'package:covid19_dashboard/model/corona_model.dart';
 import 'package:covid19_dashboard/page/country.dart';
 import 'package:covid19_dashboard/service/corona_service.dart';
 import 'package:covid19_dashboard/utils/utils.dart';
+import 'package:covid19_dashboard/widget/stats_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -51,6 +53,8 @@ class _HomePageState extends State<HomePage> {
 
   // list tile for affected country list
   buildList(CountryStats countryStats) {
+    var numFormat = new NumberFormat("###,###", Intl.defaultLocale);
+
     return ListTile(
         leading: new Image.asset(
           coronaService.getFlagImage(countryStats.country),
@@ -60,9 +64,9 @@ class _HomePageState extends State<HomePage> {
         title: Text(countryStats.country),
         subtitle: Row(
           children: <Widget>[
-            Text(countryStats.cases.toString() + " Cases"),
+            Text(numFormat.format(countryStats.cases) + " Cases"),
             Text(" & "),
-            Text(countryStats.deaths.toString() + " Deaths")
+            Text(numFormat.format(countryStats.deaths) + " Deaths")
           ],
         ),
         onTap: () {
@@ -88,45 +92,10 @@ class _HomePageState extends State<HomePage> {
             // wrap overall statistic
             Wrap(
               children: <Widget>[
-                Card(
-                    color: Colors.blue,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width) - 24,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Infections"),
-                            Text(casesStats.toString()),
-                          ],
-                        ))),
-                Card(
-                    color: Colors.red,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Deaths"),
-                            Text(deathsStats.toString()),
-                          ],
-                        ))),
-                Card(
-                    color: Colors.green,
-                    child: Container(
-                        width: (MediaQuery.of(context).size.width * 0.5) - 16,
-                        height: 100,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Recoveries"),
-                            Text(recoveriesStats.toString()),
-                          ],
-                        ))),
+                cardBig(context, Colors.blue, "Inflections", casesStats, null),
+                cardSmall(context, Colors.red, "Deaths", deathsStats, null),
+                cardSmall(
+                    context, Colors.green, "Recovered", recoveriesStats, null),
               ],
             ),
 
