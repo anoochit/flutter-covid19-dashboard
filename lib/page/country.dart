@@ -36,7 +36,10 @@ class _CountryPageState extends State<CountryPage> {
     var numFormat = new NumberFormat("###,###", Intl.defaultLocale);
 
     return Scaffold(
-      appBar: AppBar(title: Text(this.title + "'s statistics")),
+      appBar: AppBar(
+        title: Text(this.title + "'s statistics"),
+        centerTitle: true,
+      ),
       body: SafeArea(
           minimum: EdgeInsets.all(8),
           child: SingleChildScrollView(
@@ -77,7 +80,7 @@ class _CountryPageState extends State<CountryPage> {
                   cardSmall(
                       context, Colors.green, "Recoverd", data.recovered, null),
                   cardSmall(
-                      context, Colors.amber, "Critical", data.critical, null),
+                      context, Colors.orange, "Critical", data.critical, null),
                   cardSmall(context, Colors.cyan, "Active", data.active, null),
                   cardSmall(context, Colors.red, "Deaths", data.deaths,
                       "(Today " + numFormat.format(data.todayDeaths) + ")"),

@@ -95,6 +95,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text("Covid 19 Dashboard"),
         elevation: 0.0,
+        centerTitle: true,
       ),
       body: SafeArea(
         minimum: EdgeInsets.all(8),
